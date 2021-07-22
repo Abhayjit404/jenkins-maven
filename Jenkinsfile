@@ -21,7 +21,7 @@ pipeline {
         }
         stage('deploy'){
             steps{
-            nexusArtifactUploader artifacts: [[artifactId: 'my-app', classifier: '', file: 'target/my-app-1.0-SNAPSHOT.jar', type: 'jar']], credentialsId: 'nexus3', groupId: 'com.mycompany.app', nexusUrl: ' 34.150.203.18', nexusVersion: 'nexus3', protocol: 'http', repository: 'http://34.150.203.18:8081/repository/app-1-repo', version: '1.0-SNAPSHOT'
+            nexusArtifactUploader artifacts: [[artifactId: 'my-app', classifier: '', file: 'target/my-app-1.0-SNAPSHOT.jar', type: 'jar']], credentialsId: 'nexus3', groupId: 'com.mycompany.app', nexusUrl: ' 34.150.203.18:8081/', nexusVersion: 'nexus3', protocol: 'http', repository: 'http://34.150.203.18:8081/repository/app-1-repo', version: '1.0-SNAPSHOT'
             }
         }
    }
