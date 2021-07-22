@@ -32,9 +32,9 @@ pipeline {
                 credentialsId: 'nexus3', 
                 groupId: 'com.mycompany.app', 
                 nexusUrl: ' 34.150.203.18', 
-                nexusVersion: 'nexus2', 
+                nexusVersion: 'nexus3', 
                 protocol: 'http', 
-                repository: 'http://34.150.203.18:8081/repository/app-1-repo/', 
+                repository: 'http://34.150.203.18:8081/repository/app-1-repo', 
                 version: '1.0'
             }
         }
