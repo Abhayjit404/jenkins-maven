@@ -34,4 +34,15 @@
       </plugin>
     </plugins>
   </build>
+  
+  
+  
+  
+<distributionManagement>
+<snapshotRepository>
+  <id>cicd</id>
+  <name>cicd</name>
+  <url>http://34.150.203.18:8081/repository/cicd/</url>
+  </snapshotRepository>
+  </distributionManagement>
 </project>
