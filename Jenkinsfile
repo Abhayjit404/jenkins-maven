@@ -19,10 +19,12 @@ pipeline {
             sh 'mvn install'
             }
         }
-        stage('deploy'){
-            steps{
-                sh 'mvn deploy'
-            }
-        }
+      
+      //  stage('deploy'){
+      //      steps{
+      //          sh 'mvn deploy'
+            
+        
+       
    }
 }
