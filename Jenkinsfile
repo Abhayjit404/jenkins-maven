@@ -3,6 +3,29 @@ pipeline {
    
     stages {
         
+        stage('SonarQube Analysis') {
+        environment {
+        SCANNER_HOME = tool 'sonarqube1'
+        ORGANIZATION = "sonarqube-job1"
+        PROJECT_NAME = "sonarqube-job1"
+      }
+      steps {
+        withSonarQubeEnv('sonarqube') {
+            sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.organization=$ORGANIZATION \
+            -Dsonar.projectKey=$PROJECT_NAME \
+            -Dsonar.sources=.'''
+        }
+      }
+    }
+        
+        stage("Quality Gate") {
+         steps {
+           timeout(time: 1, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
+          }
+         }
+       }
+        
         stage('Compile'){
             steps{
             sh 'mvn compile'
@@ -20,9 +43,10 @@ pipeline {
             }
         }
       
-      //  stage('deploy'){
-      //      steps{
-      //          sh 'mvn deploy'
+        stage('deploy'){
+            steps{
+                sh 'mvn deploy'
+            }
             
         
        
