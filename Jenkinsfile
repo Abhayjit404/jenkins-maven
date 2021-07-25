@@ -1,47 +1,32 @@
-pipeline {
-    agent any
-   
-    stages {
-        
-         stage('SonarQube Analysis') {
-      environment {
-        SCANNER_HOME = tool 'sonarqube1'
-        ORGANIZATION = "sonarqube-job1"
-        PROJECT_NAME = "sonarqube-job1"
-      }
-      steps {
-        withSonarQubeEnv('sonarqube') {
-            sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.organization=$ORGANIZATION \
-            -Dsonar.projectKey=$PROJECT_NAME \
-            -Dsonar.sources=.'''
-        }
-      }
-    }
-        
-        
-        
-        stage('Compile'){
-            steps{
-            sh 'mvn compile'
-            }
-        }
-
-        stage('Test'){
-            steps{
-            sh 'mvn test'
-            }
-        }
-        stage('Build'){
-            steps{
-            sh 'mvn install'
-            }
-        }
-      
-        stage('deploy'){
-            steps{
-                sh 'mvn deploy'
-            }
-        }
-               
+node{
+   stage('SCM Checkout'){
+     git 'https://github.com/javahometech/my-app'
    }
+   stage('Compile-Package'){
+      // Get maven home path
+      def mvnHome =  tool name: 'maven-3', type: 'maven'   
+      sh "${mvnHome}/bin/mvn package"
+   }
+   
+   stage('SonarQube Analysis') {
+        def mvnHome =  tool name: 'maven-3', type: 'maven'
+        withSonarQubeEnv('sonar-6') { 
+          sh "${mvnHome}/bin/mvn sonar:sonar"
+        }
+    }
+   
+   stage('Email Notification'){
+      mail bcc: '', body: '''Hi Welcome to jenkins email alerts
+      Thanks
+      Hari''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'hari.kammana@gmail.com'
+   }
+   stage('Slack Notification'){
+       slackSend baseUrl: 'https://hooks.slack.com/services/',
+       channel: '#jenkins-pipeline-demo',
+       color: 'good', 
+       message: 'Welcome to Jenkins, Slack!', 
+       teamDomain: 'javahomecloud',
+       tokenCredentialId: 'slack-demo'
+   }
+
 }
